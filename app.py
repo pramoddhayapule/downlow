@@ -90,7 +90,6 @@ def get_video_formats(video_url):
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
-        'js_runtimes': ['node'],
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(video_url, download=False)
@@ -159,7 +158,6 @@ if url:
                         'format': 'bestaudio/best',
                         'outtmpl': out_template,
                         'progress_hooks': [progress_hook],
-                        'js_runtimes': ['node'],
                         'postprocessors': [{
                             'key': 'FFmpegExtractAudio',
                             'preferredcodec': 'mp3',
@@ -176,7 +174,6 @@ if url:
                         'outtmpl': out_template,
                         'progress_hooks': [progress_hook],
                         'merge_output_format': 'mp4',
-                        'js_runtimes': ['node'],
                         'quiet': True,
                         'no_warnings': True,
                     }
