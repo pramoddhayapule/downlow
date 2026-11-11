@@ -1,10 +1,8 @@
-# downlow
-A Dieter Rams-inspired media extraction tool and converter powered by yt-dlp, FFmpeg, and Streamlit.
-# T-41 // Media Fetch
+# Downlow // T-41 Transceiver
 
-A minimalist web interface for media extraction and audio conversion powered by `Streamlit`, `yt-dlp`, and `FFmpeg`.
+A distraction-free media extraction and conversion tool built with `yt-dlp`, `FFmpeg`, and `Streamlit`.
 
-Designed following Dieter Rams' core principle: *"Less, but better"* (*Weniger, aber besser*).
+Designed with restraint, following Dieter Rams' ethos: *"Less, but better"*.
 
 ---
 
