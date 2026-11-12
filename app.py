@@ -24,7 +24,7 @@ st.markdown("""
         font-weight: 500 !important;
         letter-spacing: -0.04em !important;
         font-size: 1.8rem !important;
-        color: #1A1A1A !important;
+        color: var(--text-color) !important;
         margin-bottom: 0.2rem !important;
     }
     .caption {
