@@ -86,20 +86,12 @@ st.markdown('<div class="caption">Audio-Visual Extraction Tool — Rams Form 02<
 
 url = st.text_input("Source URL", placeholder="Paste YouTube link here...")
 
-# Base extractor options that circumvent 403 Forbidden on cloud IPs
-BASE_YTDL_OPTS = {
-    'quiet': True,
-    'no_warnings': True,
-    'http_chunk_size': 10485760,  # 10MB chunks prevent stream timeout
-    'extractor_args': {
-        'youtube': {
-            'player_client': ['ios', 'android', 'mweb']
-        }
-    }
-}
-
 def get_video_formats(video_url):
-    with yt_dlp.YoutubeDL(BASE_YTDL_OPTS) as ydl:
+    ydl_opts = {
+        'quiet': True,
+        'no_warnings': True,
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(video_url, download=False)
         formats = info.get('formats', [])
         resolutions = set()
@@ -160,26 +152,31 @@ if url:
 
                 temp_dir = tempfile.mkdtemp()
                 
-                # Combine base cloud-bypass options with task-specific settings
-                ydl_opts = {**BASE_YTDL_OPTS, 'progress_hooks': [progress_hook]}
-
                 if selected_option == "Audio Only (MP3)":
-                    ydl_opts.update({
+                    out_template = os.path.join(temp_dir, "%(title)s.%(ext)s")
+                    ydl_opts = {
                         'format': 'bestaudio/best',
-                        'outtmpl': os.path.join(temp_dir, "%(title)s.%(ext)s"),
+                        'outtmpl': out_template,
+                        'progress_hooks': [progress_hook],
                         'postprocessors': [{
                             'key': 'FFmpegExtractAudio',
                             'preferredcodec': 'mp3',
                             'preferredquality': '192',
                         }],
-                    })
+                        'quiet': True,
+                        'no_warnings': True,
+                    }
                 else:
                     target_h = selected_option.replace("p", "")
-                    ydl_opts.update({
+                    out_template = os.path.join(temp_dir, "%(title)s.%(ext)s")
+                    ydl_opts = {
                         'format': f"bestvideo[height<={target_h}]+bestaudio/best[height<={target_h}]/best",
-                        'outtmpl': os.path.join(temp_dir, "%(title)s.%(ext)s"),
+                        'outtmpl': out_template,
+                        'progress_hooks': [progress_hook],
                         'merge_output_format': 'mp4',
-                    })
+                        'quiet': True,
+                        'no_warnings': True,
+                    }
 
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     info_dict = ydl.extract_info(url, download=True)
